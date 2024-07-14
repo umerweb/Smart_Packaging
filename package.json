@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "i-server":"cd server && npm install",
-    "start-server":"cd server && node server.js",
-    "i-client":"cd client && npm install",
-    "build-client":"cd client && npm run build",
-    "start":"cd client && npm run start"
+    "i-server":"cd Server && npm install",
+    "start-server":"cd Server && node server.js",
+    "i-client":"cd Client && npm install",
+    "build-client":"cd Client && npm run build",
+    "start":"cd Client && npm run start"
   },
   "keywords": [],
   "author": "",
