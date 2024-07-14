@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .fontp {
+
+        font-family: "Lato", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+
+    }
+
+    .fontlogo {
+        font-family: "Freeman", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    .fontc {
+        font-family: "Space Mono", monospace;
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    .searchbar1 {
+        background-color: #F5F5F5;
+        min-height: 40px;
+        min-width: 250px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        border-radius: 2px;
+    }
+
+    .searchbar1 input {
+        outline: none;
+        border: none;
+        background-color: transparent;
+    }
+
+    .searchbar2 {
+        background-color: transparent;
+        min-height: 40px;
+        min-width: 100px;
+        display: flex;
+        justify-content: center;
+        padding-left: 10px;
+        padding-right: 10px;
+        align-items: center;
+        border-radius: 2px;
+        border: 2px solid rgb(103, 102, 102);
+    }
+
+    .searchbar2 input {
+        outline: none;
+        border: none;
+        background-color: transparent;
+        color: whitesmoke;
+    }
+
+    .searchbar2 input::placeholder {
+        color: #939393;
+    }
+
+    .searchbar2 i {
+        cursor: pointer;
+    }
+
+    .ubuntu {
+        font-family: "Ubuntu", sans-serif;
+
+    }
+
+    /* Add this CSS to your styles */
+    .hidden {
+        display: none;
+    }
+
+    .show {
+        display: flex;
+        animation: slideUp 0.2s forwards;
+    }
+
+    .outlin {
+        outline: none;
+        border: none;
+    }
+
+    .deco {
+
+        color: black;
+    }
+
+    .deco:hover {
+        text-decoration: none;
+        color: rgb(254, 60, 60);
+
+    }
+
+    .rm input[type=number]::-webkit-inner-spin-button,
+    .rm input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    @keyframes slideUp {
+        from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+
+}
