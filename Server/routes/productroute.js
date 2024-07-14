@@ -9,9 +9,10 @@ import productschema from '../schema/products.js'
 
 import 'dotenv/config'
 import cookieParser from 'cookie-parser';
+const origin = process.env.origin
 
 const router = express.Router()
-router.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
+router.use(cors({ credentials: true, origin: origin }));
 router.use(bodyParser.json())
 
 router.use(cookieParser())

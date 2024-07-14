@@ -9,9 +9,10 @@ import stripe from 'stripe';
 const stripekey = stripe(process.env.secret_payment_key);
 
 const router = express.Router()
+const origin = process.env.origin
 
 
-router.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
+router.use(cors({ credentials: true, origin: origin }));
 router.use(bodyParser.json())
 router.use(cookieParser())
 

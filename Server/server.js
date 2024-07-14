@@ -20,9 +20,10 @@ mongoose.connect(process.env.mongo_url)
 
 const app = express()
 const port = process.env.port
+const origin = process.env.origin
 
 app.use(express.json()) 
-app.use(cors({ credentials: true, origin: 'http://localhost:5173'  }));
+app.use(cors({ credentials: true, origin: origin  }));
 
 app.use(bodyParser.json());
 app.use(cookieParser());

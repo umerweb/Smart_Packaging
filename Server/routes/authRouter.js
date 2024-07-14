@@ -6,8 +6,8 @@ import cookieParser from 'cookie-parser';
 
 const router = express.Router()
 
-
-router.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
+const origin = process.env.origin
+router.use(cors({ credentials: true, origin: origin }));
 router.use(bodyParser.json())
 router.use(cookieParser())
 
