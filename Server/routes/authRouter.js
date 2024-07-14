@@ -13,7 +13,7 @@ router.use(cookieParser())
 
 router.get('/',  (req, res) => {
   
-  res.send("hello world ia authroute")
+  res.send("hell world ia authroute")
 })
 
 
