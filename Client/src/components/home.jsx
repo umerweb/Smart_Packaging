@@ -139,7 +139,7 @@ const Home = () => {
 
 
     const fetchcats = () => {
-        axiousinstance.get('/cat/cat')
+        try {axiousinstance.get('/cat/cat')
             .then(response => {
                 console.log(response.data)
                 setcategory(response.data)
@@ -147,6 +147,12 @@ const Home = () => {
             .catch(error => {
                 console.log(error)
             })
+            
+        } catch (error) {
+            console.log(error)
+            
+        }
+        
 
 
     }
@@ -156,8 +162,8 @@ const Home = () => {
 
 
     const fetchlatestproduct = () => {
-
-        axiousinstance.get('/product/prod')
+        try {
+            axiousinstance.get('/product/prod')
             .then(response => {
 
 
@@ -167,6 +173,13 @@ const Home = () => {
             .catch(error => {
                 console.log(error)
             })
+            
+        } catch (error) {
+            console.log(error)
+            
+        }
+
+        
     }
 
     useEffect(() => {
