@@ -1,5 +1,6 @@
 
 import { createSlice } from '@reduxjs/toolkit';
+import toast from "react-hot-toast"
 
 // Load cart from local storage
 const loadCartFromLocalStorage = () => {
@@ -54,6 +55,7 @@ const cartSlice = createSlice({
          // Save cart to local storage
          localStorage.setItem('cart', JSON.stringify(state));
 
+       toast.success("Product Added to Cart")
       console.log('Updated cart:', JSON.parse(JSON.stringify(state.items))); // Log the updated state
     },
     removeItemFromCart(state, action) {
@@ -81,6 +83,7 @@ const cartSlice = createSlice({
       }
 
       console.log('Updated cart:', JSON.parse(JSON.stringify(state.items))); // Log the updated state
+      toast.success("Item removed from Cart")
     },
     updateItemQuantity(state, action) {
       const { id, variations, quantity } = action.payload;

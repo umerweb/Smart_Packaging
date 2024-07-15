@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import axios from "../axious"; // Corrected axios import
 import { addItemToCart } from '../store/cart/cart'; // Corrected import
 
+
 const ProductPage = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -58,6 +59,7 @@ const ProductPage = () => {
     
     console.log('Adding to cart:', itemToAdd);
     dispatch(addItemToCart(itemToAdd));
+    
   };
 
   const PercentageCalculator = (part, total) => {
