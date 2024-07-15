@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL : 'https://smart-packagings.onrender.com/',
+    baseURL : 'https://smart-packaging.onrender.com',
     timeout: 5000,
     headers:{
         'Content-Type':'application/json',

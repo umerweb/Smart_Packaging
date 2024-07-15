@@ -35,6 +35,28 @@ const CartPage = () => {
     }
   };
 
+  const shippings = () => {
+
+    if(totalAmount >= 500){
+      let shippingAmount = "Free Shipping";
+      return shippingAmount;
+
+    }else{
+      let shippingAmount = 200
+     return shippingAmount
+    }
+  }
+
+  const lastTotal = () => {
+    if(totalAmount >= 500){
+      return totalAmount
+    }
+    else{
+      let total = totalAmount + shippings()
+      return total
+    }
+  }
+
   return (
     <div className='flex w-full bg-gray-50 overflow-x-hidden'>
 
@@ -114,7 +136,7 @@ const CartPage = () => {
           <div className='pl-16 mb-8  flex justify-between pr-28 items-start'>
           
             <div className="coupon">
-            <Link to="/" className=' mt-4 border-2 border-gray-500 font-semibold rounded-md  text-gray-800 pl-3 pr-3 pb-2 pt-2'>Return to Shop </Link>
+            <Link to="/catalog" className=' mt-4 border-2 border-gray-500 font-semibold rounded-md  text-gray-800 pl-3 pr-3 pb-2 pt-2'>Return to Shop </Link>
             <div className="flex justify-center gap-4 items-center">
               <input type="text" placeholder='Coupon Code' className='min-w-[30-vw] pl-3 h-[8vh] mt-2 border-2 border-gray-500 rounded-md' />
               <p className='bg-red-500 mt-4 rounded-md h-[8vh]  text-white pl-3 pr-3 pb-2 pt-2'>Apply Coupon</p>
@@ -122,13 +144,13 @@ const CartPage = () => {
             </div>
             <div className="totoldata border-2 p-4 border-gray-800">
               <p className='font-bold ubuntu text-lg'>Cart Totals</p>
-              <div className='flex justify-between min-w-[30vw]'><p className='font-semibold'>Total Quantity:</p><span>${totalQuantity}</span></div>
+              <div className='flex justify-between min-w-[30vw]'><p className='font-semibold'>Total Quantity:</p><span>{totalQuantity}</span></div>
               <hr className='mt-1 mb-1' />
-              <div className='flex justify-between min-w-[30vw]'><p className='font-semibold'>Shipping:</p>{totalAmount >= 500 ? (<span>free shipping</span>):(<span>$290</span>)}</div>
+              <div className='flex justify-between min-w-[30vw]'><p className='font-semibold'>Shipping:</p>{shippings()}</div>
               <hr className='mt-1 mb-1' />
               
-              <div className='flex justify-between min-w-[30vw]'><p className='font-semibold'>Total Amount:</p> <span>${totalAmount}</span></div>
-              <button className='bg-red-500 mt-4  text-white pl-3 pr-3 pb-2 pt-2'>PROCEED TO CHECKOUT</button>
+              <div className='flex justify-between min-w-[30vw]'><p className='font-semibold'>Total Amount:</p> <span>${lastTotal()}</span></div>
+              <Link to="/checkout"><button className='bg-red-500 mt-4  text-white pl-3 pr-3 pb-2 pt-2'>PROCEED TO CHECKOUT</button></Link>
             </div>
           </div>
         </div>
@@ -142,56 +164,3 @@ const CartPage = () => {
 };
 
 export default CartPage;
-{/* <div className="container mx-auto p-4">
-<h1 className="text-3xl font-bold mb-4">Shopping Cart</h1>
-{cartItems.length === 0 ? (
-  <p>Your cart is empty.</p>
-) : (
-  <div>
-    {cartItems.map((item) => {
-      // Create a unique key by combining ID and variation IDs
-      const uniqueKey = `${item.id}-${JSON.stringify(item.variations)}`;
-      return (
-        <div key={uniqueKey} className="mb-4">
-          <p className="text-xl font-semibold">{item.name}</p>
-          <p className="text-lg">Price: {item.price}</p>
-          {item.variations && Object.keys(item.variations).length > 0 && (
-            <ul className="list-disc ml-6">
-              {Object.keys(item.variations).map(variationId => (
-                <li key={variationId}>
-                  <span className="font-semibold">{variationId}: </span>
-                  {item.variations[variationId]}
-                </li>
-              ))}
-            </ul>
-          )}
-          <input
-            type="number"
-            min="1"
-            value={item.quantity}
-            onChange={(e) => handleQuantityChange(item, parseInt(e.target.value))}
-            className="border border-gray-300 rounded-md p-1 mt-2"
-          />
-          <button
-            className="mt-2 bg-red-500 text-white py-1 px-4 rounded hover:bg-red-600"
-            onClick={() => handleRemoveItem(item)}
-          >
-            Remove
-          </button>
-          <p className="text-lg">Total Price: {item.totalPrice}</p>
-        </div>
-      );
-    })}
-    <div className="mt-4">
-      <p className="text-lg font-semibold">Total Quantity: {totalQuantity}</p>
-      <p className="text-lg font-semibold">Total Amount: {totalAmount}</p>
-      <Link to=''><button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-        Checkout
-      </button></Link>
-      <button className="ml-4 bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400">
-        Continue Shopping
-      </button>
-    </div>
-  </div>
-)}
-</div> */}
