@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const instance = axios.create({
+const Instance = axios.create({
     baseURL : 'https://smart-packaging.onrender.com',
     timeout: 5000,
     headers:{
@@ -9,4 +9,4 @@ const instance = axios.create({
     }
 });
 
-export default instance
+export default Instance
