@@ -10,6 +10,7 @@ import Addcategory from "./components/addcategory";
 import Catalogpage from "./components/catalogpage";
 import Cartpage from "./components/cart";
 import Checkout from "./components/checkout";
+import SuccessPage from './components/Success';
 
 import  { Toaster } from 'react-hot-toast';
 function App() {
@@ -20,8 +21,8 @@ function App() {
       <PreHeader />
       <Header />
       <Toaster
-        position="bottom-right"
-        reverseOrder={false}
+        position="top-right"
+        reverseOrder={true}
       />
 
 
@@ -33,6 +34,7 @@ function App() {
         <Route path="/catalog" element={<Catalogpage />} />
         <Route path="/cart" element={<Cartpage />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/success" element={<SuccessPage />} />
         <Route path="/product/mainproduct/:id" element={<ProductPage />} />
       </Routes>
 

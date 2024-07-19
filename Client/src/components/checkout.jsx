@@ -1,43 +1,93 @@
 import { useState, useEffect } from 'react';
 import Select from 'react-select';
+import axious from '../axious'
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
+import CheckoutForm from './checkoutForm';
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+
+
+const stripePromise = loadStripe("pk_test_51PcBdIJ4MtESgtQC7AdmDIU5x4S1sXV7VszOm47BXm9nQSBgM5Zl3G1xjH6I0ulR4LD3zP0zfyqKiy4sifXh330e00aKQV00CP");
 
 const Checkout = () => {
   const { register, handleSubmit, formState: { errors }, setValue } = useForm();
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState(null);
+  const [clientSecret, setClientSecret] = useState("");
+  const [addressdata, setaddressdata] = useState()
+  
+
+ 
+
+
+
   const cartItems = useSelector(state => state.cart.items);
   const totalQuantity = useSelector(state => state.cart.totalQuantity);
   const totalAmount = useSelector(state => state.cart.totalAmount);
 
 
-  const shipping = () => {
+   const shipping = () => {
 
-    if(totalAmount >= 500){
+    if (totalAmount >= 500) {
       let shippingAmount = "Free Shipping";
       return shippingAmount;
 
-    }else{
+    } else {
       let shippingAmount = 200
-     return shippingAmount
+      return shippingAmount
     }
   }
 
   const lastTotal = () => {
-    if(totalAmount >= 500){
+    if (totalAmount >= 500) {
       return totalAmount
     }
-    else{
+    else {
       let total = totalAmount + shipping()
       return total
     }
   }
+  const amount = lastTotal()
+
+
+  useEffect(() => {
+     // Create PaymentIntent as soon as the component loads
+     axious.post("/order/payment", { amount: amount }) // Example amount
+     .then((response) => setClientSecret(response.data.clientSecret))
+     .catch((error) => console.error("Error fetching client secret:", error));
+
+  }, [amount]);
+
+  const appearance = {
+    theme: 'stripe',
+  };
+  const options = {
+    clientSecret,
+    appearance,
+  };
+
+
+
+
+
+  const onSubmit = async (formData) => {
+    setaddressdata(formData)
+    console.log(addressdata)
+    //console.log(formData)
+    
+  
+  };
 
  
 
-  console.log(cartItems, totalAmount, totalQuantity)
+
+
+ 
+
+
+  //console.log(cartItems, totalAmount, totalQuantity)
 
   // Hardcoded countries and their cities
   const countryCityData = {
@@ -54,6 +104,7 @@ const Checkout = () => {
       label: country
     }));
     setCountries(countryOptions);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCountryChange = (selectedOption) => {
@@ -76,12 +127,10 @@ const Checkout = () => {
     setValue('city', selectedOption ? selectedOption.value : '');
   };
 
-  const onSubmit = async (formData) => {
-    console.log(formData); // Handle form submission
-  };
+
 
   return (
-    <div className="flex w-full pt-10 pb-10 h-full">
+    <div className="flex w-full pt-10 pb-10 h-full bg-slate-50">
       <div className="flex w-[50vw] flex-col justify-center items-center ">
         <form className="flex justify-center items-start flex-col" onSubmit={handleSubmit(onSubmit)}>
           <p className="font-semibold text-2xl mb-4 ubuntu">Billing Details</p>
@@ -195,11 +244,13 @@ const Checkout = () => {
             {errors.address?.type === "maxLength" && <span className="text-gray-500 text-sm">Max Length is 80</span>}
           </div>
 
-          <input type="submit" value="Submit" />
+          <input type="submit" value="Confirm" />
+
+         
         </form>
       </div>
       <div className="flex w-[50vw] justify-center items-center ">
-        <div className='flex flex-col'>
+        <div className='flex flex-col border-2 bg-white border-gray-700 p-3'>
           <div className='flex w-[40vw] pl-20 font-semibold items-center justify-between  border-b'>
 
             <p className='flex-1 text-left text-xs'>Product</p>
@@ -226,7 +277,7 @@ const Checkout = () => {
 
             );
           })}
-           <div className='flex w-[40vw] pt-1 pl-4 pr-4  font-semibold items-center justify-between  border-b'>
+          <div className='flex w-[40vw] pt-1 pl-4 pr-4  font-semibold items-center justify-between  border-b'>
             <p className='flex text-left text-xs'>Total Quantity:</p>
             <p className='flex text-left text-xs'>{totalQuantity}</p>
 
@@ -238,15 +289,20 @@ const Checkout = () => {
           </div>
           <div className='flex w-[40vw] pt-2 pl-4 pr-4  font-semibold items-center justify-between  '>
             <p className='flex text-left text-xs'>Total Amount:</p>
-            <p className='flex text-left text-xs'>${lastTotal()  }</p>
+            <p className='flex text-left text-xs'>${lastTotal()}</p>
 
           </div>
 
           <div className='flex w-[40vw] pt-2 pl-4 pr-4  font-semibold items-center justify-between  '>
-            
+            {clientSecret && (
+              <Elements  options={options} stripe={stripePromise}>
+                <CheckoutForm data={addressdata} />
+              </Elements>
+            )}
+
 
           </div>
-         
+
 
         </div>
 
