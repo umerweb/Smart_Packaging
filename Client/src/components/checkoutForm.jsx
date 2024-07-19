@@ -57,7 +57,7 @@ export default function CheckoutForm({data}) {
     }
 
     setIsLoading(true);
-    const returnUrl = `${window.location.origin}/success`; // Dynamically set return URL
+    const returnUrl = `${window.location.origin}/success/`; // Dynamically set return URL
 
     const { error } = await stripe.confirmPayment({
       elements,
