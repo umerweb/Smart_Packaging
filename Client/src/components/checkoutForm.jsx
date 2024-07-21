@@ -6,15 +6,14 @@ import {
 } from "@stripe/react-stripe-js";
 
 // eslint-disable-next-line react/prop-types
-export default function CheckoutForm({data}) {
+export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
 
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-   const datafun = () => { localStorage.setItem('formData', JSON.stringify(data)) }
-   //console.log(data)
+  
 
   useEffect(() => {
     if (!stripe) {
@@ -57,13 +56,13 @@ export default function CheckoutForm({data}) {
     }
 
     setIsLoading(true);
-    const returnUrl = `${window.location.origin}/success/`; // Dynamically set return URL
+    const returnUrl = `${window.location.origin}/`; // Dynamically set return URL
 
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: returnUrl,
+        return_url: returnUrl + "success",
       },
     });
 
@@ -89,9 +88,9 @@ export default function CheckoutForm({data}) {
     <form id="payment-form" onSubmit={handleSubmit}>
 
       <PaymentElement id="payment-element" options={paymentElementOptions} />
-      <button onClick={()=> datafun()} disabled={isLoading || !stripe || !elements} id="submit">
+      <button  disabled={isLoading || !stripe || !elements} id="submit">
         <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
+          {isLoading ? <div className="spinner" id="spinner"></div> : <><p className='text-md mt-3 pt-1 pb-1 pl-3 pr-3 rounded-sm dec font-semibold bg-slate-900 text-white'>Pay Now</p></>}
         </span>
       </button>
       {/* Show any error or success messages */}

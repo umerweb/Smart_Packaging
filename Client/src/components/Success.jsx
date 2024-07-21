@@ -15,7 +15,19 @@ const Success = () => {
 
   const cartItems = useSelector(state => state.cart.items);
   const totalQuantity = useSelector(state => state.cart.totalQuantity);
-  const totalAmount = useSelector(state => state.cart.totalAmount);
+  const totalAmountprice = useSelector(state => state.cart.totalAmount);
+  const lastprice = () => {
+    if (totalAmountprice < 500) {
+      const total = totalAmountprice + 200;
+      return total
+
+    } else {
+      return totalAmountprice
+    }
+
+  }
+  const totalAmount = lastprice()
+
 
   const userId = "29222922627862";
   const paymentMethod = "card";
@@ -26,27 +38,27 @@ const Success = () => {
   //console.log(storedObjectString)
   const userData = JSON.parse(Data);
   //console.log(userData)
-  
+
 
   const SaveOrder = async () => {
 
     try {
       //console.log(cartItems, totalAmount, totalQuantity, paymentIntent, clientSecret, userId , paymentMethod)
-    const  idk = await axios.post('/order/ordersuccess', { cartItems, totalAmount, totalQuantity, paymentIntent, clientSecret, userId,userData, paymentMethod })
-    .then((response) => setres(response.data.order))
-    .catch((error) => console.log(error))
-    //console.log(res)
-    if (idk) {
-      localStorage.removeItem('formData');
+      const idk = await axios.post('/order/ordersuccess', { cartItems, totalAmount, totalQuantity, paymentIntent, clientSecret, userId, userData, paymentMethod })
+        .then((response) => setres(response.data.order))
+        .catch((error) => console.log(error))
+      //console.log(res)
+      if (idk) {
+        localStorage.removeItem('formData');
 
-      
-    }
-   
-      
+
+      }
+
+
     } catch (error) {
       console.log(error)
     }
-    
+
   }
 
   useEffect(() => {

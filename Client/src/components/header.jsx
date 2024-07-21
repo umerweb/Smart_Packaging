@@ -32,11 +32,11 @@ const Header = () => {
         
         <div className="menu">
             <ul className="flex gap-5">
-                <li>Home </li>
+                  <Link  className="dec text-slate-900 font-semibold" to="/"><li>Home</li></Link> 
                 
-                <li>Catalog</li>
-                <li>About</li>
-               <Link to="/cart"><li>cart</li></Link> 
+                <Link className="dec text-slate-900 font-semibold" to="/catalog"><li>Shop</li></Link> 
+                <Link className="dec text-slate-900 font-semibold" to=""><li>About</li></Link> 
+               <Link className="dec text-slate-900 font-semibold" to=""><li>Contact</li></Link> 
             </ul>
         </div>
         <div className="iconsearch flex justify-around items-center gap-7">

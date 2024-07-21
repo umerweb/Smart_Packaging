@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Select from 'react-select';
 import axious from '../axious'
 import { useForm } from 'react-hook-form';
@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import CheckoutForm from './checkoutForm';
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import { Link } from 'react-router-dom';
 
 
 const stripePromise = loadStripe("pk_test_51PcBdIJ4MtESgtQC7AdmDIU5x4S1sXV7VszOm47BXm9nQSBgM5Zl3G1xjH6I0ulR4LD3zP0zfyqKiy4sifXh330e00aKQV00CP");
@@ -16,10 +17,33 @@ const Checkout = () => {
   const [cities, setCities] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [clientSecret, setClientSecret] = useState("");
-  const [addressdata, setaddressdata] = useState()
-  
+  const [addressdata, setaddressdata] = useState(false);
 
- 
+
+
+  const cardPymntref = useRef()
+  const codpyref = useRef()
+
+
+
+  const io = document.getElementById('io');
+  const io2 = document.getElementById('io2')
+  const fun1 = () => {
+
+    io.style.display = "flex";
+    io2.style.display = "none";
+
+  }
+  const fun2 = () => {
+
+    io2.style.display = "flex"
+    io.style.display = "none";
+
+  }
+
+
+
+
 
 
 
@@ -28,7 +52,7 @@ const Checkout = () => {
   const totalAmount = useSelector(state => state.cart.totalAmount);
 
 
-   const shipping = () => {
+  const shipping = () => {
 
     if (totalAmount >= 500) {
       let shippingAmount = "Free Shipping";
@@ -53,10 +77,10 @@ const Checkout = () => {
 
 
   useEffect(() => {
-     // Create PaymentIntent as soon as the component loads
-     axious.post("/order/payment", { amount: amount }) // Example amount
-     .then((response) => setClientSecret(response.data.clientSecret))
-     .catch((error) => console.error("Error fetching client secret:", error));
+    // Create PaymentIntent as soon as the component loads
+    axious.post("/order/payment", { amount: amount }) // Example amount
+      .then((response) => setClientSecret(response.data.clientSecret))
+      .catch((error) => console.error("Error fetching client secret:", error));
 
   }, [amount]);
 
@@ -73,18 +97,29 @@ const Checkout = () => {
 
 
   const onSubmit = async (formData) => {
-    setaddressdata(formData)
-    console.log(addressdata)
-    //console.log(formData)
+
+    localStorage.setItem('formData', JSON.stringify(formData));
     
-  
+      setaddressdata(true)
+
+    
+
+    //console.log(formData)
+
+    // console.log("Address data",addressdata)
+
+
+
   };
 
- 
 
 
 
- 
+
+
+
+
+
 
 
   //console.log(cartItems, totalAmount, totalQuantity)
@@ -104,7 +139,7 @@ const Checkout = () => {
       label: country
     }));
     setCountries(countryOptions);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCountryChange = (selectedOption) => {
@@ -132,13 +167,14 @@ const Checkout = () => {
   return (
     <div className="flex w-full pt-10 pb-10 h-full bg-slate-50">
       <div className="flex w-[50vw] flex-col justify-center items-center ">
-        <form className="flex justify-center items-start flex-col" onSubmit={handleSubmit(onSubmit)}>
+        <form className="flex justify-center items-start flex-col"  onSubmit={handleSubmit(onSubmit)} >
           <p className="font-semibold text-2xl mb-4 ubuntu">Billing Details</p>
 
           {/* Full Name */}
           <div className="flex flex-col pb-3">
             <label htmlFor="name" className="text-gray-500 font-semibold">Full Name</label>
             <input
+            
               type="text"
               id="name"
               {...register("name", {
@@ -148,9 +184,9 @@ const Checkout = () => {
               })}
               className="input w-[35vw] p-2 shadow-sm"
             />
-            {errors.name?.type === "required" && <span className="text-gray-500 text-sm">{errors.name.message}</span>}
-            {errors.name?.type === "minLength" && <span className="text-gray-500 text-sm">Min Length is 10</span>}
-            {errors.name?.type === "maxLength" && <span className="text-gray-500 text-sm">Max Length is 40</span>}
+            {errors.name?.type === "required" && <span className="text-gray-700 font-semibold text-sm">{errors.name.message}</span>}
+            {errors.name?.type === "minLength" && <span className="text-gray-700 font-semibold text-sm">Min Length is 10</span>}
+            {errors.name?.type === "maxLength" && <span className="text-gray-700 font-semibold text-sm">Max Length is 40</span>}
           </div>
 
           {/* Email */}
@@ -169,9 +205,9 @@ const Checkout = () => {
               })}
               className="input w-[35vw] p-2 shadow-sm"
             />
-            {errors.email?.type === "required" && <span className="text-gray-500 text-sm">{errors.email.message}</span>}
-            {errors.email?.type === "pattern" && <span className="text-gray-500 text-sm">{errors.email.message}</span>}
-            {errors.email?.type === "minLength" && <span className="text-gray-500 text-sm">Min Length is 10</span>}
+            {errors.email?.type === "required" && <span className="text-gray-700 font-semibold text-sm">{errors.email.message}</span>}
+            {errors.email?.type === "pattern" && <span className="text-gray-700 font-semiboldtext-sm">{errors.email.message}</span>}
+            {errors.email?.type === "minLength" && <span className="text-gray-700 font-semibold text-sm">Min Length is 10</span>}
           </div>
 
           {/* Contact Number */}
@@ -187,9 +223,9 @@ const Checkout = () => {
               })}
               className="input w-[35vw] p-2 shadow-sm"
             />
-            {errors.contactNumber?.type === "required" && <span className="text-gray-500 text-sm">{errors.contactNumber.message}</span>}
-            {errors.contactNumber?.type === "minLength" && <span className="text-gray-500 text-sm">Min Length is 10</span>}
-            {errors.contactNumber?.type === "maxLength" && <span className="text-gray-500 text-sm">Max Length is 40</span>}
+            {errors.contactNumber?.type === "required" && <span className="text-gray-700 font-semibold text-sm">{errors.contactNumber.message}</span>}
+            {errors.contactNumber?.type === "minLength" && <span className="text-gray-700 font-semibold text-sm">Min Length is 10</span>}
+            {errors.contactNumber?.type === "maxLength" && <span className="text-gray-700 font-semibold text-sm">Max Length is 40</span>}
           </div>
 
 
@@ -206,7 +242,7 @@ const Checkout = () => {
               type="hidden"
               {...register('country', { required: "Required" })}
             />
-            {errors.country && <span className="text-gray-500 text-sm">{errors.country.message}</span>}
+            {errors.country && <span className="text-gray-700 font-semibold text-sm">{errors.country.message}</span>}
           </div>
 
           {/* City */}
@@ -222,7 +258,7 @@ const Checkout = () => {
                 type="hidden"
                 {...register('city', { required: "Required" })}
               />
-              {errors.city && <span className="text-gray-500 text-sm">{errors.city.message}</span>}
+              {errors.city && <span className="text-gray-700 font-semibold text-sm">{errors.city.message}</span>}
             </div>
           )}
 
@@ -239,18 +275,23 @@ const Checkout = () => {
               })}
               className="input w-[35vw] p-2 shadow-sm"
             />
-            {errors.address?.type === "required" && <span className="text-gray-500 text-sm">{errors.address.message}</span>}
-            {errors.address?.type === "minLength" && <span className="text-gray-500 text-sm">Min Length is 10</span>}
-            {errors.address?.type === "maxLength" && <span className="text-gray-500 text-sm">Max Length is 80</span>}
+            {errors.address?.type === "required" && <span className="text-gray-700 font-semibold text-sm">{errors.address.message}</span>}
+            {errors.address?.type === "minLength" && <span className="text-gray-700 font-semibold text-sm">Min Length is 10</span>}
+            {errors.address?.type === "maxLength" && <span className="text-gray-700 font-semibold text-sm">Max Length is 80</span>}
           </div>
 
-          <input type="submit" value="Confirm" />
+          <div className="flex justify-start items-center">
+            
+            <input type="submit" className='bg-red-600 pt-2 pb-2 pl-3 pr-3 text-slate-50 font-semibold cursor-pointer text-md' value="Confirm Address" />
+            { addressdata && <><i className="fa-regular ml-2 transi text-red-600  text-2xl fa-circle-check"></i></>}
+          </div>
 
-         
+
         </form>
       </div>
       <div className="flex w-[50vw] justify-center items-center ">
         <div className='flex flex-col border-2 bg-white border-gray-700 p-3'>
+          <p className='self-center text-lg font-semibold '>Order Summary</p>
           <div className='flex w-[40vw] pl-20 font-semibold items-center justify-between  border-b'>
 
             <p className='flex-1 text-left text-xs'>Product</p>
@@ -283,8 +324,13 @@ const Checkout = () => {
 
           </div>
           <div className='flex w-[40vw] pt-1 pl-4 pr-4  font-semibold items-center justify-between  border-b'>
+            <p className='flex text-left text-xs'>Total Price:</p>
+            <p className='flex text-left text-xs'>{totalAmount}</p>
+
+          </div>
+          <div className='flex w-[40vw] pt-1 pl-4 pr-4  font-semibold items-center justify-between  border-b'>
             <p className='flex text-left text-xs'>Shipping:</p>
-            <p className='flex text-left text-xs'>{shipping()}</p>
+            <p className='flex text-left text-xs'>{shipping() >= 1 ? (<>${shipping()}</>) : (<>{shipping()}</>)}</p>
 
           </div>
           <div className='flex w-[40vw] pt-2 pl-4 pr-4  font-semibold items-center justify-between  '>
@@ -293,12 +339,44 @@ const Checkout = () => {
 
           </div>
 
-          <div className='flex w-[40vw] pt-2 pl-4 pr-4  font-semibold items-center justify-between  '>
-            {clientSecret && (
-              <Elements  options={options} stripe={stripePromise}>
-                <CheckoutForm data={addressdata} />
-              </Elements>
-            )}
+          <div className='flex w-[40vw] pt-2 pl-4 pr-4 flex-col  font-semibold items-center justify-between  '>
+            <div className='flex flex-col gap-0 justify-start items-center w-[100%]'>
+              <div className="flex gap-2 justify-start items-center w-full">
+                <input type="radio" name="payment" id="cardpy" />
+                <label onClick={() => { fun1() }} className='text-sm cursor-pointer pt-1 font-semibold' htmlFor="cardpy">Card Payment</label>
+
+              </div>
+              <div className="flex gap-2 justify-start items-center w-full">
+                <input className='w-3' type="radio" name="payment" id="codpay" />
+                <label onClick={() => { fun2() }} className='text-sm cursor-pointer pt-1 font-semibold' htmlFor="codpay">Cash on Delivery</label>
+
+              </div>
+
+            </div>
+            <div className="flex justify-start items-center w-[100%]">
+
+              <div ref={cardPymntref} id='io' className='none trsit'>
+                {clientSecret && (
+                  <Elements options={options} stripe={stripePromise}>
+                    <CheckoutForm />
+                  </Elements>
+                )}
+              </div>
+              <div ref={codpyref} id='io2' className='none trsit  flex-col justify-center items-start w-[100%]'>
+                <p className='font-semibold text-sm text-red-500'>Pay upon Delievry with Cash</p>
+
+                <Link className='text-md pt-1 pb-1 pl-3 pr-3 rounded-sm dec font-semibold bg-slate-900 text-white' to="/success?redirect_status=succeeded&payment_intent=cod&payment_intent_client_secret=cod7676768" >PROCEED</Link>
+
+              </div>
+
+            </div>
+
+
+
+
+
+
+
 
 
           </div>

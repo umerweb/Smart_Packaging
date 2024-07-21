@@ -42,7 +42,7 @@ const CartPage = () => {
       return shippingAmount;
 
     }else{
-      let shippingAmount = 200
+      let shippingAmount = 200 
      return shippingAmount
     }
   }
@@ -146,7 +146,9 @@ const CartPage = () => {
               <p className='font-bold ubuntu text-lg'>Cart Totals</p>
               <div className='flex justify-between min-w-[30vw]'><p className='font-semibold'>Total Quantity:</p><span>{totalQuantity}</span></div>
               <hr className='mt-1 mb-1' />
-              <div className='flex justify-between min-w-[30vw]'><p className='font-semibold'>Shipping:</p>{shippings()}</div>
+              <div className='flex justify-between min-w-[30vw]'><p className='font-semibold'>Total Price:</p><span>${totalAmount}</span></div>
+              <hr className='mt-1 mb-1' />
+              <div className='flex justify-between min-w-[30vw]'><p className='font-semibold'>Shipping:</p>{shippings() >= 1 ? (<>${shippings()}</>):(<>{shippings()}</>)  }</div>
               <hr className='mt-1 mb-1' />
               
               <div className='flex justify-between min-w-[30vw]'><p className='font-semibold'>Total Amount:</p> <span>${lastTotal()}</span></div>
