@@ -129,7 +129,7 @@ const AddProduct = () => {
               className="w-full py-2 text-gray-700 focus:outline-none focus:border-indigo-500 transition duration-300 ease-in-out"
               placeholder="Short Description"
               type="text"
-              {...register("shortdesc", { required: true })}
+              {...register("shortDesc", { required: true })}
             />
             {errors.shortdesc && <span className="text-red-500 text-sm">Required</span>}
           </div>
@@ -138,7 +138,7 @@ const AddProduct = () => {
               className="w-full py-2 text-gray-700 leading-tight focus:outline-none focus:border-indigo-500 transition duration-300 ease-in-out"
               placeholder="Detailed Description"
               rows="4"
-              {...register("longdesc", { required: true })}
+              {...register("longDesc", { required: true })}
             />
             {errors.longdesc && <span className="text-red-500 text-sm">Required</span>}
           </div>

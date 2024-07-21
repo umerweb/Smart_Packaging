@@ -6,8 +6,14 @@ import { mongoose } from "mongoose";
 
 const product = new mongoose.Schema({
   name: String,
-  shortDesc: String,
-  longDesc: String,
+  shortDesc: {
+    type: String,
+    required: true
+  },
+  longDesc: {
+    type: String,
+    required: true
+  },
   category: String,
   price: Number,
   discount: Number,
