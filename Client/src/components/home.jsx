@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import axiousinstance from '../axious';
 import { Link  } from 'react-router-dom';
 import React from "react";
+import { useDispatch } from 'react-redux';
+import { addItemToCart } from '../store/cart/cart';
 
 
 const Home = () => {
@@ -16,14 +18,20 @@ const Home = () => {
     const [secondCategory, setSecondCategory] = useState(null);
     const [thirdCategory, setThirdCategory] = useState(null);
     const [fourthCategory, setFourthCategory] = useState(null);
+
    
 
-
+    const dispatch = useDispatch();
     const prodref = useRef();
     const catref = useRef();
     const cartBtnRefs = useRef([]);
     const cartBtnRefs2 = useRef([]);
- 
+
+
+  
+
+
+    
     
 
     const scrolleft = () => {
@@ -181,6 +189,36 @@ const Home = () => {
 
         
     }
+    const addToCartHandler =  async (id) => {
+        console.log(id)
+        
+        try {
+            const response = await axiousinstance.get(`/product/id/${id}`);
+            const productData = response.data;
+            console.log(productData)
+            const itemToAdd = {
+                id: productData._id,
+                name: productData.name,
+                price: productData.discount || productData.price,
+                variations: {},
+                quantity: 1,
+                currency: productData.currency,  // Add currency
+                mainImgSrc: productData.mainImgSrc,
+                
+              };
+              //setSelectedVariations({});
+          
+              console.log('Adding to cart:', itemToAdd);
+              dispatch(addItemToCart(itemToAdd));
+            
+    
+            
+          } catch (error) {
+            console.log(error);
+          }
+       
+    
+      };
 
     useEffect(() => {
         fetchlatestproduct();
@@ -191,6 +229,8 @@ const Home = () => {
 
 
     }, [])
+      
+   
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -352,7 +392,10 @@ const Home = () => {
 
 
                             <div ref={cartBtnRefs2.current[index]} className="hidden justify-center items-center pt-2 pb-2 w-full bg-gray-800">
-                                <button className="text-white   font-semibold text-md">ADD TO CART</button>
+                            {product.variations && product.variations.length > 0 ? 
+                                (<><button className="text-white   font-semibold text-md"><Link className="dec text-slate-50 hover:text-slate-50" to={`/product/mainproduct/${product._id}`}>SELECT OPTIONS</Link></button></>)
+                                :(<><button onClick={()=> addToCartHandler(product._id)} className="text-white   font-semibold text-md">ADD TO CART</button></>) }
+                                
 
                             </div>
 
@@ -463,7 +506,9 @@ const Home = () => {
 
 
                             <div ref={cartBtnRefs.current[index]} className="hidden justify-center items-center pt-2 pb-2 w-full bg-gray-800">
-                                <button className="text-white   font-semibold text-md">ADD TO CART</button>
+                            {product.variations && product.variations.length > 0 ? 
+                                (<><button className="text-white   font-semibold text-md"><Link className="dec text-slate-50 hover:text-slate-50" to={`/product/mainproduct/${product._id}`}>SELECT OPTIONS</Link></button></>)
+                                :(<><button onClick={()=> addToCartHandler(product._id)} className="text-white   font-semibold text-md">ADD TO CART</button></>) }
 
                             </div>
 

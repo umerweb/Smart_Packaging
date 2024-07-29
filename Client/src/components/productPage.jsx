@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useDispatch } from 'react-redux';
 import axios from "../axious"; // Corrected axios import
@@ -11,6 +11,7 @@ const ProductPage = () => {
   const [selectedVariations, setSelectedVariations] = useState({});
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -55,12 +56,32 @@ const ProductPage = () => {
       mainImgSrc: product.mainImgSrc,
       variationId: variationIds, // Add variation IDs for uniqueness
     };
-    setSelectedVariations({});
+    //setSelectedVariations({});
 
     console.log('Adding to cart:', itemToAdd);
     dispatch(addItemToCart(itemToAdd));
 
   };
+  const addToCartHandlerandcheckout = () => {
+    const variationIds = Object.keys(selectedVariations).map(key => `${key}:${selectedVariations[key]}`).join('|');
+    const itemToAdd = {
+      id: product._id,
+      name: product.name,
+      price: product.discount || product.price,
+      variations: selectedVariations,
+      quantity: selectedQuantity,
+      currency: product.currency,  // Add currency
+      mainImgSrc: product.mainImgSrc,
+      variationId: variationIds, // Add variation IDs for uniqueness
+    };
+    //setSelectedVariations({});
+
+    console.log('Adding to cart and redirecting:', itemToAdd);
+    dispatch(addItemToCart(itemToAdd));
+    navigate("/checkout")
+
+  };
+
 
   const PercentageCalculator = (part, total) => {
     return ((part / total) * 100).toFixed(0);
@@ -196,16 +217,25 @@ const ProductPage = () => {
           
 
           <div className='flex-1  text-center pl-2 rm '>
-            <button onClick={decrementQuantity} className='w-10 border-2 border-gray-700'>-</button>
-            <input type="number" name="quantity" id="quantity" min="1" value={selectedQuantity} onChange={handleQuantityChange} className=" w-14 border-t-2 border-b-2 text-center border-gray-700 " />
-            <button  onClick={incrementQuantity}   className='w-10 border-2 border-gray-700'>+</button>
+            <button onClick={decrementQuantity} className='w-10 hover:bg-red-500 hover:text-white py-1 border-2 border-gray-700'>-</button>
+            <input type="number" name="quantity" id="quantity" min="1" value={selectedQuantity} onChange={handleQuantityChange} className=" py-1 w-14 border-t-2 border-b-2 text-center border-gray-700 " />
+            <button  onClick={incrementQuantity}   className='w-10 hover:bg-red-500 hover:text-white  border-2 py-1 border-gray-700'>+</button>
           </div>
           <button
-            className={` bg-blue-500 text-white  rounded-lg hover:bg-blue-600 focus:outline-none ${isAddToCartDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-            onClick={addToCartHandler}
+            className={` bg-red-500 text-white px-5 py-2 ml-2 text-sm font-semibold  rounded-sm hover:bg-red-400 focus:outline-none ${isAddToCartDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+            onClick={addToCartHandlerandcheckout}
             disabled={isAddToCartDisabled}
+            title="Direct Checkout"
           >
-            Add to Cart
+            BUY NOW
+          </button>
+
+          <button
+          title="ADD TO CART"
+          onClick={addToCartHandler}
+          disabled={isAddToCartDisabled}
+          className={` bor border-gray-700  px-1 hover:bg-red-500 ml-3  ${isAddToCartDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}>
+            <img src="/bag.png" className="w-8" />
           </button>
 
         </div>

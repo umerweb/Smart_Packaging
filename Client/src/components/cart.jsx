@@ -109,9 +109,9 @@ const CartPage = () => {
                       <p className="text-md">{item.currency}{item.price}</p>
                     </div>
                     <div className='flex-1  text-center pl-2 rm '>
-                      <button onClick={() => handleQuantityChange(item, item.quantity - 1)} className='w-10 border-2 border-gray-700'>-</button>
+                      <button onClick={() => handleQuantityChange(item, item.quantity - 1)} className='w-10 hover:bg-red-500 hover:text-white border-2 border-gray-700'>-</button>
                       <input type="number" min="1" value={item.quantity} onChange={(e) => handleQuantityChange(item, parseInt(e.target.value))} className=" w-14 border-t-2 border-b-2 text-center border-gray-700 " />
-                      <button onClick={() => handleQuantityChange(item, item.quantity + 1)} className='w-10 border-2 border-gray-700'>+</button>
+                      <button onClick={() => handleQuantityChange(item, item.quantity + 1)} className='w-10 hover:bg-red-500 hover:text-white border-2 border-gray-700'>+</button>
                     </div>
                     <div className='flex-1 text-center'>
                       <div className='flex justify-center items-center space-x-2'>
