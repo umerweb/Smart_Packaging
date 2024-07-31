@@ -134,10 +134,42 @@
 
         border: 1px solid;
     }
+    .bor-b{
+
+        border-bottom: 1px solid;
+    }
     .pad{
         padding-top: 2px;
         padding-bottom: 2px;
     }
+    
+
+@keyframes slideFromLeft {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0%);
+    }
+  }
+  
+  @keyframes slideFromRight {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(0%);
+    }
+  }
+  
+  .animate-slide-from-left {
+    animation: slideFromLeft 0.5s ease forwards;
+  }
+  
+  .animate-slide-from-right {
+    animation: slideFromRight 0.5s ease forwards;
+  }
+  
 
     @keyframes slideUp {
         from {

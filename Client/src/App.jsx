@@ -11,6 +11,10 @@ import Catalogpage from "./components/catalogpage";
 import Cartpage from "./components/cart";
 import Checkout from "./components/checkout";
 import SuccessPage from './components/Success';
+import LoginPage from './components/loginPage';
+import VerifyEmail from './components/emailVerify';
+import ConfirmEmail from './components/emailsend';
+import Account from './components/account';
 
 import  { Toaster } from 'react-hot-toast';
 function App() {
@@ -36,6 +40,11 @@ function App() {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/product/mainproduct/:id" element={<ProductPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/verifyemail/:id" element={<VerifyEmail />} />
+        <Route path="/emailsend" element={<ConfirmEmail />} />
+        <Route path="/account" element={<Account />} />
+
       </Routes>
 
       <Footer />
