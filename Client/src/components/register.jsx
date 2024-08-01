@@ -1,10 +1,11 @@
 import { useForm } from "react-hook-form";
 import axious from "../axious";
 import {toast} from 'react-hot-toast';
+import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
 const Register = ({ handleLoginForm }) => {
-
+  const navigate = useNavigate();
   const { register, handleSubmit, reset, formState: { errors }, watch } = useForm();
 
   const onSubmit = async (formData) => {
@@ -14,7 +15,8 @@ const Register = ({ handleLoginForm }) => {
       
       console.log(response)
       toast.success(response.data.user)
-      //reset();
+      reset();
+      navigate('/emailsend')
      
       
 
