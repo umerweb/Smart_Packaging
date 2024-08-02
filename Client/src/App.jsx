@@ -15,6 +15,8 @@ import LoginPage from './components/loginPage';
 import VerifyEmail from './components/emailVerify';
 import ConfirmEmail from './components/emailsend';
 import Account from './components/account';
+import OrderInfo from './components/orderInfo';
+import About from './components/about';
 
 import  { Toaster } from 'react-hot-toast';
 function App() {
@@ -44,6 +46,9 @@ function App() {
         <Route path="/verifyemail/:id" element={<VerifyEmail />} />
         <Route path="/emailsend" element={<ConfirmEmail />} />
         <Route path="/account" element={<Account />} />
+        <Route path="/order/info/:id" element={<OrderInfo />} />
+        <Route path="/about" element={<About />} />
+
 
       </Routes>
 

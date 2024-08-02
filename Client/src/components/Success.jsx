@@ -7,8 +7,8 @@ const Success = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
-  const [res, setres] = useState(null)
-
+  const [res, setRes] = useState(null);
+  const user = useSelector(state => state.user.user);
   const paymentIntent = queryParams.get('payment_intent');
   const clientSecret = queryParams.get('payment_intent_client_secret');
   const redirectStatus = queryParams.get('redirect_status');
@@ -16,78 +16,94 @@ const Success = () => {
   const cartItems = useSelector(state => state.cart.items);
   const totalQuantity = useSelector(state => state.cart.totalQuantity);
   const totalAmountprice = useSelector(state => state.cart.totalAmount);
-  const lastprice = () => {
+  
+  const lastPrice = () => {
     if (totalAmountprice < 500) {
-      const total = totalAmountprice + 200;
-      return total
-
+      return totalAmountprice + 200;
     } else {
-      return totalAmountprice
+      return totalAmountprice;
     }
+  };
+  const totalAmount = lastPrice();
 
-  }
-  const totalAmount = lastprice()
-
-
-  const userId = "29222922627862";
+  const userId = user._id;
   const paymentMethod = "card";
 
-  //console.log(paymentIntent, clientSecret)
-
   const Data = localStorage.getItem('formData');
-  //console.log(storedObjectString)
   const userData = JSON.parse(Data);
-  //console.log(userData)
 
-
-  const SaveOrder = async () => {
-
+  const saveOrder = async () => {
     try {
-      //console.log(cartItems, totalAmount, totalQuantity, paymentIntent, clientSecret, userId , paymentMethod)
       const idk = await axios.post('/order/ordersuccess', { cartItems, totalAmount, totalQuantity, paymentIntent, clientSecret, userId, userData, paymentMethod })
-        .then((response) => setres(response.data.order))
-        .catch((error) => console.log(error))
-      //console.log(res)
+        .then((response) => setRes(response.data.order))
+        .catch((error) => console.log(error));
+
       if (idk) {
         localStorage.removeItem('formData');
-
-
       }
-
-
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-
-  }
+  };
+  console.log(res)
 
   useEffect(() => {
     if (redirectStatus === "succeeded") {
-      SaveOrder();
-
+      saveOrder();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-
-
-
-
+  }, []);
 
   return (
-    <div>
-      <h1> <p>Payment {redirectStatus}</p></h1>
+    <div className="min-h-screen my-9 flex flex-col justify-center items-center bg-white">
+      <div className=" p-6 rounded-lg shadow-md ">
+        <h1 className="text-2xl font-bold text-red-500 mb-4 text-center">Order {redirectStatus}</h1>
+        {res !== null && (<>
+          <p className="text-lg text-gray-800 text-center">Your Order ID is: <span className="font-semibold">{res._id}</span></p>
+       <div className='flex flex-row-reverse gap-16'>
 
-      {res !== null &&
-        <p> Your Order id is: {res._id}</p>
+        <div className='flex flex-col'>
+     
+          <p className='text-lg text-red-500 font-semibold'>Order Details</p>
+          <p className="mb-2"><strong>Total Quantity:</strong> {res.totalQuantity}</p>
+          <p className="mb-2"><strong>Total Amount:</strong> ${res.totalAmount}</p>
+          <p className="mb-2"><strong>Payment Method:</strong> {res.paymentMethod}</p>
+          <p className="mb-2"><strong>Order Status:</strong> {res.orderStatus}</p>
+          <p className="mb-4"><strong>Order Date:</strong> {new Date(res.createdAt).toLocaleString()}</p>
+          
+          <p className='text-lg text-red-500 font-semibold'>Address Details</p>
+          <p className="mb-2"><strong>Name:</strong> {res.userData.name}</p>
+          <p className="mb-2"><strong>Email:</strong> {res.userData.email}</p>
+          <p className="mb-2"><strong>Country:</strong> {res.userData.country}</p>
+          <p className="mb-2"><strong>City:</strong> {res.userData.city}</p>
+          <p className="mb-2"><strong>Address:</strong> {res.userData.address}</p>
+          <p className="mb-2"><strong>Contact Number:</strong> {res.userData.contactNumber}</p>
+        </div>
 
+        <div className="flex">
+        <div className="space-y-4">
+  <p className="text-lg text-red-500 font-semibold">Product Details</p>
+  {res.cartItems.map(item => (
+    <div key={item.id} className="flex items-center space-x-2 p-2 border rounded-md">
+      <img src={item.img} alt={item.name} className="w-12 h-12 object-cover rounded-md" />
+      <div className="flex flex-col flex-1">
+        <p className="text-sm font-semibold">{item.name}</p>
+        <p className="text-xs"><strong>Price:</strong> {item.currency}{item.price}</p>
+        <p className="text-xs"><strong>Quantity:</strong> {item.quantity}</p>
+        <p className="text-xs"><strong>Subtotal:</strong> {item.currency}{(item.price * item.quantity).toFixed(2)}</p>
+      </div>
+    </div>
+  ))}
+</div>
 
+        </div>
+        </div>
 
-      }
+         
 
-
-
-
+          </>
+        )}
+      </div>
     </div>
   );
 };

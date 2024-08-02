@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
 });
 
 const itemSchema = new mongoose.Schema({
-  id: { type: String, required: true },
+  id: { type: String, required: false },
   price: { type: Number, required: true },
   quantity: { type: Number, required: true },
   totalPrice: { type: Number, required: true },

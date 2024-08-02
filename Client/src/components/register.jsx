@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
 const Register = ({ handleLoginForm }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const { register, handleSubmit, reset, formState: { errors }, watch } = useForm();
 
   const onSubmit = async (formData) => {

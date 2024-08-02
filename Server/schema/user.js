@@ -1,4 +1,25 @@
 import mongoose from "mongoose";
+const address = new mongoose.Schema({
+  name: {
+    type: String
+  },
+  email: {
+    type: String,
+    trim: true
+  },
+  contactNumber: {
+    type: String
+  },
+  country: {
+    type: String
+  },
+  address: {
+    type: String
+  },
+  city: {
+    type: String
+  }
+})
 
 
 const User = new mongoose.Schema({
@@ -33,7 +54,7 @@ const User = new mongoose.Schema({
 
   "status": {
     type: Boolean,
-    
+
     default: false,
   },
   "role": {
@@ -41,6 +62,7 @@ const User = new mongoose.Schema({
     enum: ['admin', 'user'],
     default: 'user',
   },
+  "address":[address],
   "createdAt": {
     type: Date,
     default: Date.now // Automatically set the current date and time when a new post is created

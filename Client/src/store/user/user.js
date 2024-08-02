@@ -1,6 +1,7 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 
+
 const loadStateFromLocalStorage = () => {
   const user = localStorage.getItem('user');
   return user ? JSON.parse(user) : null;
@@ -29,6 +30,7 @@ const userSlice = createSlice({
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             console.log("loged out")
+            // navigate('/')
           },
           setError(state, action) {
             state.error = action.payload;

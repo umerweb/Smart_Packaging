@@ -12,12 +12,15 @@ import { Link } from 'react-router-dom';
 const stripePromise = loadStripe("pk_test_51PcBdIJ4MtESgtQC7AdmDIU5x4S1sXV7VszOm47BXm9nQSBgM5Zl3G1xjH6I0ulR4LD3zP0zfyqKiy4sifXh330e00aKQV00CP");
 
 const Checkout = () => {
+  const user = useSelector(state => state.user.user)
   const { register, handleSubmit, formState: { errors }, setValue } = useForm();
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [clientSecret, setClientSecret] = useState("");
   const [addressdata, setaddressdata] = useState(false);
+  const [existingaddress, setexistingaddress] = useState([]);
+  const [currentadd, setcurrentadd] = useState(null)
 
 
 
@@ -99,10 +102,15 @@ const Checkout = () => {
   const onSubmit = async (formData) => {
 
     localStorage.setItem('formData', JSON.stringify(formData));
-    
-      setaddressdata(true)
 
-    
+    setaddressdata(true)
+
+    const data = localStorage.getItem('formData');
+
+    setcurrentadd(JSON.parse(data))
+    console.log("mystate", currentadd)
+
+
 
     //console.log(formData)
 
@@ -111,6 +119,17 @@ const Checkout = () => {
 
 
   };
+
+
+  const handleexistingaddress = (e) => {
+    const selectedId = e.target.value;
+    const selectedAddressObj = existingaddress.find(address => address._id === selectedId);
+    localStorage.setItem('formData', JSON.stringify(selectedAddressObj))
+    const data = localStorage.getItem('formData');
+
+    setcurrentadd(JSON.parse(data))
+    console.log("mystate", currentadd)
+  }
 
 
 
@@ -163,18 +182,49 @@ const Checkout = () => {
   };
 
 
+  useEffect(() => {
+    if (user !== null) {
+      const userdata = user.address
+      setexistingaddress(userdata)
+      //console.log(existingaddress)
+
+    }
+  }, [])
+
+
+
 
   return (
     <div className="flex w-full pt-10 pb-10 h-full bg-slate-50">
       <div className="flex w-[50vw] flex-col justify-center items-center ">
-        <form className="flex justify-center items-start flex-col"  onSubmit={handleSubmit(onSubmit)} >
-          <p className="font-semibold text-2xl mb-4 ubuntu">Billing Details</p>
 
+        <form className="flex justify-center items-start flex-col" onSubmit={handleSubmit(onSubmit)} >
+          <p className="font-semibold text-2xl mb-4 ubuntu">Billing Details</p>
+          {user !== null && existingaddress.length > 1 &&
+
+
+            <div>
+              <p className='text-md font-medium text-red-500'>Use Existing Address</p>
+              <select className='w-[100%] cursor-pointer pl-2 h-10' name="address" id="" onChange={handleexistingaddress}>
+                <option value="">Select Option</option>
+                {existingaddress.map((data) => (
+
+                  <option className='cursor-pointer' key={data._id} value={data._id}>{data.name}</option>
+
+
+                ))}
+
+              </select>
+            </div>
+
+          }
+          {user !== null && existingaddress.length > 1 &&
+            <p className='text-md font-medium text-red-500 mt-4'>Add new Adrees manually</p>}
           {/* Full Name */}
           <div className="flex flex-col pb-3">
             <label htmlFor="name" className="text-gray-500 font-semibold">Full Name</label>
             <input
-            
+
               type="text"
               id="name"
               {...register("name", {
@@ -281,9 +331,9 @@ const Checkout = () => {
           </div>
 
           <div className="flex justify-start items-center">
-            
+
             <input type="submit" className='bg-red-600 pt-2 pb-2 pl-3 pr-3 text-slate-50 font-semibold cursor-pointer text-md' value="Confirm Address" />
-            { addressdata && <><i className="fa-regular ml-2 transi text-red-600  text-2xl fa-circle-check"></i></>}
+            {addressdata && <><i className="fa-regular ml-2 transi text-red-600  text-2xl fa-circle-check"></i></>}
           </div>
 
 
@@ -313,7 +363,7 @@ const Checkout = () => {
                 <p className='flex-1 text-center text-xs'>{item.currency}{item.price}</p>
                 <p className='flex-1 text-center text-xs'>x</p>
                 <p className='flex-1 text-center text-xs'>{item.quantity}</p>
-                <p className='flex-1 text-center text-xs'>{item.currency}{(item.price * item.quantity).toFixed(2)}</p>
+                <p className='flex-1 text-center text-xs text-red-500 font-medium'>{item.currency}{(item.price * item.quantity).toFixed(2)}</p>
               </div>
 
             );
@@ -335,15 +385,39 @@ const Checkout = () => {
           </div>
           <div className='flex w-[40vw] pt-2 pl-4 pr-4  font-semibold items-center justify-between  '>
             <p className='flex text-left text-xs'>Total Amount:</p>
-            <p className='flex text-left text-xs'>${lastTotal()}</p>
+            <p className='flex text-left text-lg text-red-500'>${lastTotal()}</p>
 
-          </div>
+          </div> {currentadd !== null && <>
+          <div className='px-4 bg-slate-100 pb-1 pt-4'>
+           
+              <div className='flex flex-col'>
+
+                <div className='flex  mt-[-10px]'>
+                  <p className='text-sm font-medium'>{currentadd.name}</p>
+                </div>
+                <div className='flex mt-[-10px]'>
+                  <p className='text-sm font-normal pr-4'>{currentadd.email}</p>
+                  <p className='text-sm font-normal'>{currentadd.contactNumber}</p>
+                </div>
+                <div className='flex mt-[-10px]'>
+                  <p className='text-sm font-normal'>{currentadd.address} , </p>
+                  <p className='text-sm font-normal'> {currentadd.city} , </p>
+                  <p className='text-sm font-normal'> {currentadd.country}</p>
+
+                </div>
+
+
+              </div>
+          
+          </div>  </>}
 
           <div className='flex w-[40vw] pt-2 pl-4 pr-4 flex-col  font-semibold items-center justify-between  '>
-            <div className='flex flex-col gap-0 justify-start items-center w-[100%]'>
-              <div className="flex gap-2 justify-start items-center w-full">
-                <input type="radio" name="payment" id="cardpy" />
-                <label onClick={() => { fun1() }} className='text-sm cursor-pointer pt-1 font-semibold' htmlFor="cardpy">Card Payment</label>
+            {currentadd !== null ? (<><div className='flex flex-col gap-0 justify-start items-center w-[100%]'>
+              <div className="flex gap-2 justify-between items-center w-full">
+                <div className='flex items-center gap-2'>
+                  <input type="radio" name="payment" id="cardpy" />
+                  <label onClick={() => { fun1() }} className='text-sm cursor-pointer pt-1 font-semibold' htmlFor="cardpy">Card Payment</label></div>
+                <img src="cards.png" width="200px" height="100px" alt="" />
 
               </div>
               <div className="flex gap-2 justify-start items-center w-full">
@@ -352,7 +426,8 @@ const Checkout = () => {
 
               </div>
 
-            </div>
+            </div></>) : (<>PLease Select or add an Address</>)}
+
             <div className="flex justify-start items-center w-[100%]">
 
               <div ref={cardPymntref} id='io' className='none trsit'>

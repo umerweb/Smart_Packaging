@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer components {
+    input{
+        caret-color: rgb(255, 74, 74);
+    }
     .fontp {
 
         font-family: "Lato", sans-serif;
@@ -115,6 +118,13 @@
         border: none;
         background-color: #eaeaea;
     }
+    .int{
+        outline: none;
+        border: none;
+    }
+    .caret {
+        caret-color: transparent;
+      }
     .dec{
         text-decoration: none;
     }
@@ -142,6 +152,13 @@
         padding-top: 2px;
         padding-bottom: 2px;
     }
+    
+      
+      /* Add a right margin to each icon */
+      .fa {
+        margin-left: -12px;
+        margin-right: 8px;
+      }
     
 
 @keyframes slideFromLeft {

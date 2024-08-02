@@ -7,7 +7,7 @@ const EmailConfirmation = () => {
     const user = useSelector(state => state.user.user)
 
     const usercheck = () => {
-        if (user === null) {
+        if (user !== null) {
             navigate('/')
 
             

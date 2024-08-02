@@ -1,55 +1,55 @@
 import { useState } from "react";
 import {Link} from 'react-router-dom';
- import { useSelector, useDispatch } from "react-redux";
- import {logout} from '../store/user/user';
+ import { useSelector } from "react-redux";
+//  import {logout} from '../store/user/user';
 
 
 const Header = () => {
 
  
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
    const user = useSelector(state => state.user.user);
   
     const [searchval , setsearchval]= useState('');
-    const [barimg, setbarimg] = useState('left.png')
+    // const [barimg, setbarimg] = useState('left.png')
 
     const handleChange = (event) => {
         setsearchval(event.target.value);
       };
     
-      const handlebar = () => {
-        if (barimg === 'left.png') {
-            setbarimg('close.png')
+      // const handlebar = () => {
+      //   if (barimg === 'left.png') {
+      //       setbarimg('close.png')
             
-        }
-        else(
-            setbarimg('left.png')
-        )
-      }
+      //   }
+      //   else(
+      //       setbarimg('left.png')
+      //   )
+      // }
       
   return (
     <div>
       <div className="flex bg-white items-center justify-around min-h-24 border-b-2 border-b-slate-100">
-        <Link className="text-black dec hover:text-red-500" to="/" ><div className="logo fontlogo font-extrabold text-xl">
+        <Link className="text-black dec hover:text-red-500" to="/" ><div className="logo fontlogo font-extrabold text-sm sm:text-md md:text-xl">
             Smart Packaging 
         </div></Link>
-        {user !== null && <div>{user.name}<p><button onClick={()=> dispatch(logout()) }>logout</button></p></div>}
+        {/* {user !== null && <div>{user.name}<p><button onClick={()=> dispatch(logout()) }>logout</button></p></div>} */}
         
         
         
         
-        <div className="menu">
+        <div className="menu md:flex hidden">
             <ul className="flex gap-5">
                   <Link  className="dec hover:text-red-500 text-slate-900 font-semibold" to="/"><li>Home</li></Link> 
                 
                 <Link className="dec hover:text-red-500 text-slate-900 font-semibold" to="/catalog"><li>Shop</li></Link> 
-                <Link className="dec hover:text-red-500 text-slate-900 font-semibold" to=""><li>About</li></Link> 
-               <Link className="dec hover:text-red-500 text-slate-900 font-semibold" to=""><li>Contact</li></Link> 
+                <Link className="dec hover:text-red-500 text-slate-900 font-semibold" to="/about"><li>About</li></Link> 
+               <Link className="dec hover:text-red-500 text-slate-900 font-semibold" to="/contact"><li>Contact</li></Link> 
             </ul>
         </div>
         <div className="iconsearch flex justify-around items-center gap-7">
 
-            <div className="searchbar1">
+            <div className="searchbar1 hidden md:flex">
             <input 
              type="text"
              placeholder="What are you Looking for?"
@@ -64,7 +64,7 @@ const Header = () => {
              </>)}
             
              <Link to="/cart"><img className="w-6 cursor-pointer" src="shopping-cart.png" alt="" /></Link>
-             <img className="w-5 cursor-pointer" onClick={handlebar} src={barimg} alt="" />
+             {/* <img className="w-5 cursor-pointer" onClick={handlebar} src={barimg} alt="" /> */}
 
         </div>
       </div>
