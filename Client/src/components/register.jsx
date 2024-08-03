@@ -33,10 +33,10 @@ const Register = ({ handleLoginForm }) => {
   const password = watch("password");
 
   return (
-    <div className="flex justify-center w-[60%] flex-col mt-6 items-start">
-      <p className="text-2xl font-semibold pr-2 text-slate-700">Create an account</p>
-      <p className="text-sm font-medium pr-2 text-slate-700 pb-4">Enter your Details Below</p>
-      <form className="w-[30vw]  pb-6 gap-5 flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+    <div className="flex justify-center w-[100%] md:w-[60%] flex-col mt-6 items-start">
+      <p className="text-2xl font-semibold px-10 md:px-0 pr-2 text-slate-700">Create an account</p>
+      <p className="text-sm font-medium px-10 md:px-0 pr-2 text-slate-700 md:pb-4">Enter your Details Below</p>
+      <form className="md:w-[30vw] p-10 md:p-0 w-[100%]  pb-6 gap-5 flex flex-col" onSubmit={handleSubmit(onSubmit)}>
 
         <div className="flex flex-col pr-2 py-2 border-b border-slate-300">
           <input type="text"

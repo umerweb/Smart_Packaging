@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { logout } from '../store/user/user';
 import Profile from './account/profile';
 import Address from './account/address';
 import Orders from './account/orders';
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector(state => state.user.user);
   useEffect(() => {
@@ -14,7 +16,15 @@ const Dashboard = () => {
     }
 
   }, [])
+  const userlogout = () => {
+    if (window.confirm("Are you sure you want to Logout?")) {
+      dispatch(logout());
+      navigate('/')
 
+    }
+
+
+  }
   const [activeTab, setActiveTab] = useState('profile');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -35,7 +45,7 @@ const Dashboard = () => {
           <Orders />
         );
 
-      
+
       default:
         return null;
     }
@@ -72,8 +82,14 @@ const Dashboard = () => {
             >
               Orders
             </button>
+            <button
+              className={`block text-left w-full px-4 py-2 text-gray-700 round hover:bg-gray-100'}`}
+              onClick={() => { userlogout() }}
+            >
+              Logout
+            </button>
 
-          
+
           </div>
         )}
       </div>
@@ -113,11 +129,19 @@ const Dashboard = () => {
                   Orders
                 </button>
               </li>
+              <li>
+                <button
+                  className={`block text-left w-full px-4 py-2 text-gray-700 rounded hover:bg-gray-100'}`}
+                  onClick={() => { userlogout() }}
+                >
+                  Logout
+                </button>
+              </li>
 
             </ul>
           </div>
           <div>
-           
+
           </div>
         </div>
       </nav>

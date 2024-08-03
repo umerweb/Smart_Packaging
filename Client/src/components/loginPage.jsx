@@ -61,11 +61,11 @@ const LoginPage = () => {
                 {/*           LOGIN FORM                    */}
                 {SelectForm === 'login' &&
                     <div id='login' className="flex w-[100%]">
-                        <div className="flex justify-center items-center  min-w-[50%] animate-slide-from-right">
+                        <div className="flex justify-center items-center min-w-[100%]  md:min-w-[50%] animate-slide-from-right">
                             <LoginForm handleRegisterForm={handleRegisterForm} />
 
                         </div>
-                        <div className="flex bg-fuchsia-300 min-w-[50%]  animate-slide-from-left items-center">
+                        <div className="md:flex hidden bg-fuchsia-300 min-w-[50%]  animate-slide-from-left items-center">
                             <div className='w-[100%] h-[100%]' style={{ backgroundImage: 'url(image.png)', backgroundSize:'cover', backgroundPosition: 'center'}}></div>
 
 
@@ -79,11 +79,11 @@ const LoginPage = () => {
                 {/*           REGISTER FORM                    */}
                 {SelectForm === 'register' &&
                     <div id='regitr' className="flex w-[100%]">
-                        <div className=" flex  bg-rose-300 w-[50%] animate-slide-from-right">
+                        <div className=" md:flex hidden  bg-rose-300 w-[50%] animate-slide-from-right">
                         <div className='w-[100%]  h-[100%]' style={{ backgroundImage: 'url(image.png)', backgroundSize:'cover', backgroundPosition: 'center'}}></div>
 
                         </div>
-                        <div className=" flex justify-center items-center  w-[50%] animate-slide-from-left">
+                        <div className=" flex justify-center items-center  min-w-[100%]  md:min-w-[50%] animate-slide-from-left">
                             <RegisterForm handleLoginForm={handleLoginForm} />
 
                         </div>

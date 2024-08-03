@@ -31,13 +31,13 @@ router.post('/payment', async (req, res) => {
       },
       
     });
-    console.log(amount)
+    //console.log(amount)
     
 
     res.send({
       clientSecret: paymentIntent.client_secret,
     });
-    console.log(paymentIntent)
+    //console.log(paymentIntent)
   } catch (error) {
     res.status(500).send({
       error: error.message,

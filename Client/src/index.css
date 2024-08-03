@@ -148,6 +148,9 @@
 
         border-bottom: 1px solid;
     }
+    .borb{
+        border-bottom: 1.5px solid;
+    }
     .pad{
         padding-top: 2px;
         padding-bottom: 2px;
