@@ -3,7 +3,8 @@ import bodyParser from "body-parser";
 import authRouter from './routes/authRouter.js';
 import category from './routes/category.js';
 import product from './routes/productroute.js';
-import order from './routes/payments.js'
+import order from './routes/payments.js';
+import contact from './routes/contact.js';
 import cookieParser from "cookie-parser";
 import { mongoose } from "mongoose";
 import 'dotenv/config';
@@ -36,6 +37,7 @@ app.use('/auth', authRouter)
 app.use('/cat', category)
 app.use('/product', product)
 app.use('/order',order)
+app.use('/contact',contact)
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

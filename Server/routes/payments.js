@@ -4,7 +4,8 @@ import bodyParser from 'body-parser';
 import 'dotenv/config';
 import cookieParser from 'cookie-parser';
 import Stripe from 'stripe';
-import orderSchema from '../schema/order.js'
+import orderSchema from '../schema/order.js';
+import sendmail from '../utilities/mailer.js';
 
 const stripe = new Stripe(process.env.secret_payment_testKey);
 
@@ -53,8 +54,9 @@ try {
   const NewOrder = await orderSchema.create({ cartItems, totalAmount, totalQuantity, paymentIntent, clientSecret, userId, paymentMethod, userData, orderStatus})
 
   res.json({ success: true, order: NewOrder });
-  console.log('Order created:', NewOrder);
-  
+  //console.log('Order created:', NewOrder);
+  const email = userData.email
+  sendmail(email, "Order Succeeded", "Your order has been recieved thank you!. Here is your order details")
 } catch (error) {
   console.error('Error creating Order:', error);
   res.status(500).json({ error: 'Failed to create Order', details: error.message });

@@ -1,9 +1,33 @@
 
 import { useForm } from 'react-hook-form';
+import axius from '../axious';
+import {toast} from 'react-hot-toast';
+import { useState } from 'react';
 
 const ContactSection = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
-  const onSubmit = data => console.log(data);
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const [isLoading, setisLoading] = useState(false)
+  const onSubmit = async (data) => {
+   // console.log(data);
+   setisLoading(true)
+
+    try {
+      const res = await axius.post('/contact', data)
+      console.log(res)
+      toast.success("Your Response had been sended")
+      setisLoading(false);
+      reset();
+
+      
+    } catch (error) {
+      console.log(error)
+      toast.error("Request Failed")
+      setisLoading(false)
+      
+    }
+  }
+
+  
 
   return (
     <div className="container mx-auto p-6">
@@ -54,11 +78,12 @@ const ContactSection = () => {
                 />
                 {errors.email && <span className="text-red-500">This field is required</span>}
               </div>
-              <div>
+              <div className='rm'>
                 <input
                   {...register('phone', { required: true })}
                   className="w-full p-3 border border-gray-300 rounded-lg"
                   placeholder="Your Phone *"
+                  type='number'
                 />
                 {errors.phone && <span className="text-red-500">This field is required</span>}
               </div>
@@ -72,12 +97,25 @@ const ContactSection = () => {
               ></textarea>
               {errors.message && <span className="text-red-500">This field is required</span>}
             </div>
-            <button
+            {isLoading ? (<>
+              <button
+              
+              className="bg-red-500 text-white p-3 rounded-sm hover:bg-red-600"
+            >
+               <i className="fa fa-spinner fa-spin"></i> Sending
+               
+            </button>
+            
+            </>):(<>
+              <button
               type="submit"
-              className="bg-red-500 text-white p-3 rounded-lg hover:bg-red-600"
+              className="bg-red-500 text-white p-3 rounded-sm hover:bg-red-600"
             >
               Send Message
             </button>
+            
+            </>)}
+           
           </form>
         </div>
       </div>
