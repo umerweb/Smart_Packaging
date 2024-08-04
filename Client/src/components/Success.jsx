@@ -2,6 +2,7 @@ import axios from '../axious';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 
 const Success = () => {
   const location = useLocation();
@@ -46,7 +47,7 @@ const Success = () => {
 
         
       }else{
-        const userId =  null;
+        const userId =  uuidv4();
         const idk = await axios.post('/order/ordersuccess', { cartItems, totalAmount, totalQuantity, paymentIntent, clientSecret, userId, userData, paymentMethod })
         .then((response) => setRes(response.data.order))
         .catch((error) => console.log(error));
