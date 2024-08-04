@@ -26,7 +26,7 @@ const Success = () => {
   };
   const totalAmount = lastPrice();
 
-  const userId = user._id;
+  
   const paymentMethod = "card";
 
   const Data = localStorage.getItem('formData');
@@ -34,13 +34,29 @@ const Success = () => {
 
   const saveOrder = async () => {
     try {
-      const idk = await axios.post('/order/ordersuccess', { cartItems, totalAmount, totalQuantity, paymentIntent, clientSecret, userId, userData, paymentMethod })
+      if (user !== null) {
+        const userId = user._id;
+        const idk = await axios.post('/order/ordersuccess', { cartItems, totalAmount, totalQuantity, paymentIntent, clientSecret, userId, userData, paymentMethod })
         .then((response) => setRes(response.data.order))
         .catch((error) => console.log(error));
 
       if (idk) {
         localStorage.removeItem('formData');
       }
+
+        
+      }else{
+        const userId =  null;
+        const idk = await axios.post('/order/ordersuccess', { cartItems, totalAmount, totalQuantity, paymentIntent, clientSecret, userId, userData, paymentMethod })
+        .then((response) => setRes(response.data.order))
+        .catch((error) => console.log(error));
+
+      if (idk) {
+        localStorage.removeItem('formData');
+      }
+      }
+      
+     
     } catch (error) {
       console.log(error);
     }
