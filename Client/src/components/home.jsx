@@ -587,6 +587,7 @@ const Home = () => {
                                         )}
                                     </div>
                                 </div>
+                                
 
                                 <div className="mt-2 flex flex-col justify-center h-auto">
                                     <Link className="deco" to={`/product/mainproduct/${product._id}`}>
@@ -594,6 +595,18 @@ const Home = () => {
                                             {product.name.substring(0, 50)}
                                         </p>
                                     </Link>
+                                    <div className="rating flex  pr-2 justify-start items-center" >
+                                                {[...Array(4)].map((_, i) => (
+                                                    <svg key={i} className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path d="M10 15l-5.878 3.09 1.122-6.545L.488 7.545l6.57-.955L10 .525l2.941 6.065 6.571.955-4.756 4.998 1.122 6.545z" />
+                                                    </svg>
+                                                ))}
+                                                <svg className="w-5 h-5 pr-1 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M10 15l-5.878 3.09 1.122-6.545L.488 7.545l6.57-.955L10 .525l2.941 6.065 6.571.955-4.756 4.998 1.122 6.545z" />
+                                                </svg>
+
+
+                                            </div>
                                     <div className="flex gap-2 sm:gap-4 justify-start">
                                         {product.discount ? (
                                             <p className="text-sm sm:text-lg line-through text-red-600 font-semibold">
