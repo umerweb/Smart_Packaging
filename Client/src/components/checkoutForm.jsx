@@ -56,13 +56,13 @@ export default function CheckoutForm() {
     }
 
     setIsLoading(true);
-    const returnUrl = `${window.location.origin}/`; // Dynamically set return URL
+    const returnUrl = 'https://smart-packaging.onrender.com/success/'; // Dynamically set return URL
 
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: returnUrl + "success",
+        return_url: returnUrl 
       },
     });
 
