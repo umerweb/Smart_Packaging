@@ -2,6 +2,7 @@ import axios from '../axious';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { resetCart } from '../store/cart/cart';
 import { v4 as uuidv4 } from 'uuid';
 
 const Success = () => {
@@ -38,7 +39,7 @@ const Success = () => {
       if (user !== null) {
         const userId = user._id;
         const idk = await axios.post('/order/ordersuccess', { cartItems, totalAmount, totalQuantity, paymentIntent, clientSecret, userId, userData, paymentMethod })
-        .then((response) => setRes(response.data.order))
+        .then((response) => setRes(response.data.order), resetCart())
         .catch((error) => console.log(error));
 
       if (idk) {
@@ -49,7 +50,7 @@ const Success = () => {
       }else{
         const userId =  uuidv4();
         const idk = await axios.post('/order/ordersuccess', { cartItems, totalAmount, totalQuantity, paymentIntent, clientSecret, userId, userData, paymentMethod })
-        .then((response) => setRes(response.data.order))
+        .then((response) => setRes(response.data.order), resetCart)
         .catch((error) => console.log(error));
 
       if (idk) {
